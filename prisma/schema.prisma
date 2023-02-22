@@ -7,36 +7,87 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model editors {
-  idEditors   Int     @id @default(autoincrement())
-  nameEditors String  @db.VarChar(50)
-  games       games[]
+model classes {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now()) @db.DateTime(0)
+  modifiedAt DateTime   @default(now()) @db.DateTime(0)
+  name       String     @db.VarChar(50)
+  studiesId  Int
+  study      studies    @relation(fields: [studiesId], references: [id], onUpdate: Restrict, map: "classes_ibfk_1")
+  students   students[]
+
+  @@index([studiesId], map: "studiesId")
 }
 
-model games {
-  idGames   Int     @id @default(autoincrement())
-  nameGames String  @db.VarChar(50)
-  idEditors Int
-  editors   editors @relation(fields: [idEditors], references: [idEditors], onUpdate: Restrict, map: "games_ibfk_1")
-  stock     stock[]
+model grades {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now()) @db.DateTime(0)
+  modifiedAt DateTime @default(now()) @db.DateTime(0)
+  grade      Float
+  subjectId  Int
+  studentId  Int
+  student   students @relation(fields: [studentId], references: [id], onUpdate: Restrict, map: "grades_ibfk_2")
+  subject   subjects @relation(fields: [subjectId], references: [id], onUpdate: Restrict, map: "grades_ibfk_3")
 
-  @@index([idEditors], map: "idEditors")
+  @@index([studentId], map: "studentId")
+  @@index([subjectId], map: "subjectId")
 }
 
-model stock {
-  idStock  Int    @id @default(autoincrement())
-  idGames  Int
-  idStores Int
-  units    Int
-  games    games  @relation(fields: [idGames], references: [idGames], onUpdate: Restrict, map: "stock_ibfk_1")
-  stores   stores @relation(fields: [idStores], references: [idStores], onUpdate: Restrict, map: "stock_ibfk_2")
+model planning {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now()) @db.DateTime(0)
+  modifiedAt DateTime @default(now()) @db.DateTime(0)
+  trainerId  Int
+  subjectId  Int
+  dateStart  DateTime @db.DateTime(0)
+  dateEnd    DateTime @db.DateTime(0)
+  trainer   trainers @relation(fields: [trainerId], references: [id], onUpdate: Restrict, map: "planning_ibfk_1")
+  subject   subjects @relation(fields: [subjectId], references: [id], onUpdate: Restrict, map: "planning_ibfk_2")
 
-  @@index([idGames], map: "idGames")
-  @@index([idStores], map: "idStores")
+  @@index([subjectId], map: "subjectId")
+  @@index([trainerId], map: "trainerId")
 }
 
-model stores {
-  idStores   Int     @id @default(autoincrement())
-  nameStores String  @db.VarChar(75)
-  stock      stock[]
+model students {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now()) @db.DateTime(0)
+  modifiedAt DateTime @default(now()) @db.DateTime(0)
+  lastname   String   @db.VarChar(50)
+  firstname  String   @db.VarChar(50)
+  classId    Int
+  grades     grades[]
+  class    classes  @relation(fields: [classId], references: [id], onUpdate: Restrict, map: "students_ibfk_1")
+
+  @@index([classId], map: "classId")
+}
+
+model studies {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now()) @db.DateTime(0)
+  modifiedAt DateTime   @default(now()) @db.DateTime(0)
+  name       String     @db.VarChar(50)
+  classes    classes[]
+  subjects   subjects[]
+}
+
+model subjects {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now()) @db.DateTime(0)
+  modifiedAt DateTime   @default(now()) @db.DateTime(0)
+  name       String     @db.VarChar(50)
+  studyId    Int
+  grades     grades[]
+  planning   planning[]
+  study    studies    @relation(fields: [studyId], references: [id], onUpdate: Restrict, map: "subjects_ibfk_1")
+
+  @@index([studyId], map: "studyId")
+}
+
+model trainers {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now()) @db.DateTime(0)
+  modifiedAt DateTime   @default(now()) @db.DateTime(0)
+  lastname   String     @db.VarChar(50)
+  firstname  String     @db.VarChar(50)
+  planning   planning[]
 }

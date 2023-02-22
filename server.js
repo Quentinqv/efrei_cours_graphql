@@ -1,81 +1,34 @@
-const PrismaClient = require("@prisma/client").PrismaClient
 const express = require("express")
 const { graphqlHTTP } = require("express-graphql")
 const { makeExecutableSchema } = require("@graphql-tools/schema")
-
-const prisma = new PrismaClient()
-
-const typeDefs = `
-type editors {
-  idEditors: Int
-  nameEditors: String
-  games: [games]
-}
-
-type games {
-  idGames: Int
-  nameGames: String
-  idEditors: Int
-  editors: editors
-  stock: [stock]
-}
-
-type stores {
-  idStores: Int
-  nameStores: String
-  stock: [stock]
-}
-
-type stock {
-  idStock: Int
-  idGames: Int
-  idStores: Int
-  units: Int
-  games: games
-  stores: stores
-}
-
-type Query {
-  editors: [editors]
-  games: [games]
-  stores: [stores]
-  stock: [stock]
-}
-`
+const typeDefs = require("./imports/definitions.js")
+const subjects = require("./imports/resolvers/subjects.js")
+const classes = require("./imports/resolvers/classes.js")
+const grades = require("./imports/resolvers/grades.js")
+const studies = require("./imports/resolvers/studies.js")
+const students = require("./imports/resolvers/students.js")
+const trainers = require("./imports/resolvers/trainers.js")
+const planning = require("./imports/resolvers/planning.js")
 
 const resolvers = {
   Query: {
-    editors: async () => {
-      return await prisma.editors.findMany({
-        include: {
-          games: true
-        }
-      })
-    },
-    games: async () => {
-      return await prisma.games.findMany({
-        include: {
-          editors: true,
-          stock: true
-        }
-      })
-    },
-    stores: async () => {
-      return await prisma.stores.findMany({
-        include: {
-          stock: true
-        }
-      })
-    },
-    stock: async () => {
-      return await prisma.stock.findMany({
-        include: {
-          games: true,
-          stores: true
-        }
-      })
-    }
+    ...subjects.query,
+    ...classes.query,
+    ...grades.query,
+    ...studies.query,
+    ...students.query,
+    ...trainers.query,
+    ...planning.query,
   },
+  Mutation: {
+    ...subjects.mutations,
+    ...classes.mutations,
+    ...grades.mutations,
+    ...studies.mutations,
+    ...students.mutations,
+    ...trainers.mutations,
+    ...planning.mutations,
+  }
 }
 
 const schema = makeExecutableSchema({
