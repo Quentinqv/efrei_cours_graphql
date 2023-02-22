@@ -8,8 +8,7 @@
     "prisma": "^4.10.1"
   },
   "scripts": {
-    "start": "nodemon server.js",
-    "start2": "nodemon server2.js"
+    "start": "nodemon server.js"
   },
   "name": "decouverte",
   "version": "1.0.0",

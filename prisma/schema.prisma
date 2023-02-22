@@ -7,24 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model classes {
-  id          Int        @id @default(autoincrement())
-  created_at  DateTime   @default(now()) @db.DateTime(0)
-  modified_at DateTime   @default(now()) @db.DateTime(0)
-  name        String     @db.VarChar(50)
-  ngroup      Int
-  year        String     @db.VarChar(9)
-  students    students[]
+model editors {
+  idEditors   Int     @id @default(autoincrement())
+  nameEditors String  @db.VarChar(50)
+  games       games[]
 }
 
-model students {
-  id          Int      @id @default(autoincrement())
-  created_at  DateTime @default(now()) @db.DateTime(0)
-  modified_at DateTime @default(now()) @db.DateTime(0)
-  lastname    String   @db.VarChar(50)
-  firstname   String   @db.VarChar(50)
-  class       Int?
-  classes     classes? @relation(fields: [class], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "students_ibfk_1")
+model games {
+  idGames   Int     @id @default(autoincrement())
+  nameGames String  @db.VarChar(50)
+  idEditors Int
+  editors   editors @relation(fields: [idEditors], references: [idEditors], onUpdate: Restrict, map: "games_ibfk_1")
+  stock     stock[]
 
-  @@index([class], map: "class")
+  @@index([idEditors], map: "idEditors")
+}
+
+model stock {
+  idStock  Int    @id @default(autoincrement())
+  idGames  Int
+  idStores Int
+  units    Int
+  games    games  @relation(fields: [idGames], references: [idGames], onUpdate: Restrict, map: "stock_ibfk_1")
+  stores   stores @relation(fields: [idStores], references: [idStores], onUpdate: Restrict, map: "stock_ibfk_2")
+
+  @@index([idGames], map: "idGames")
+  @@index([idStores], map: "idStores")
+}
+
+model stores {
+  idStores   Int     @id @default(autoincrement())
+  nameStores String  @db.VarChar(75)
+  stock      stock[]
 }
