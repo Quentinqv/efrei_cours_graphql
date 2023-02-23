@@ -10,6 +10,9 @@ const students = require("./imports/resolvers/students.js")
 const trainers = require("./imports/resolvers/trainers.js")
 const planning = require("./imports/resolvers/planning.js")
 
+// --------------------------------------------
+// GraphQL Schema
+// --------------------------------------------
 const resolvers = {
   Query: {
     ...subjects.query,
@@ -36,6 +39,10 @@ const schema = makeExecutableSchema({
   typeDefs,
 })
 
+// --------------------------------------------
+// Express Server
+// --------------------------------------------
+
 const app = express()
 app.use(
   "/graphql",
@@ -46,3 +53,7 @@ app.use(
 )
 
 app.listen(4000)
+
+app.get("/", (req, res) => {
+  res.send("Hello World!")
+})
