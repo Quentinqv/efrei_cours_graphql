@@ -1,39 +1,12 @@
 const studies = {
   query: {
     studies(root, args, context) {
-      return prisma.studies.findMany({
-        include: {
-          subjects: {
-            include: {
-              grades: true,
-              planning: true,
-            },
-          },
-          classes: {
-            include: {
-              students: true,
-            },
-          },
-        },
-      })
+      return prisma.studies.findMany()
     },
     study(root, args, context) {
       return prisma.studies.findUnique({
         where: {
           id: args.id,
-        },
-        include: {
-          subjects: {
-            include: {
-              grades: true,
-              planning: true,
-            },
-          },
-          classes: {
-            include: {
-              students: true,
-            },
-          },
         },
       })
     },
@@ -43,19 +16,6 @@ const studies = {
       return prisma.studies.create({
         data: {
           name: args.name,
-        },
-        include: {
-          subjects: {
-            include: {
-              grades: true,
-              planning: true,
-            },
-          },
-          classes: {
-            include: {
-              students: true,
-            },
-          },
         },
       })
     },
@@ -67,38 +27,12 @@ const studies = {
         data: {
           name: args.name,
         },
-        include: {
-          subjects: {
-            include: {
-              grades: true,
-              planning: true,
-            },
-          },
-          classes: {
-            include: {
-              students: true,
-            },
-          },
-        },
       })
     },
     deleteStudy(root, args, context) {
       return prisma.studies.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          subjects: {
-            include: {
-              grades: true,
-              planning: true,
-            },
-          },
-          classes: {
-            include: {
-              students: true,
-            },
-          },
         },
       })
     },

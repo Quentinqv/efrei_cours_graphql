@@ -4,31 +4,12 @@ const prisma = new PrismaClient()
 const planning = {
   query: {
     plannings(root, args, context) {
-      return prisma.planning.findMany({
-        include: {
-          subject: {
-            include: {
-              study: true,
-              grades: true,
-            },
-          },
-          trainer: true,
-        },
-      })
+      return prisma.planning.findMany()
     },
     planning(root, args, context) {
       return prisma.planning.findUnique({
         where: {
           id: args.id,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              grades: true,
-            },
-          },
-          trainer: true,
         },
       })
     }
@@ -40,15 +21,6 @@ const planning = {
           classId: args.classId,
           subjectId: args.subjectId,
           trainerId: args.trainerId,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              grades: true,
-            },
-          },
-          trainer: true,
         },
       })
     },
@@ -62,30 +34,12 @@ const planning = {
           subjectId: args.subjectId,
           trainerId: args.trainerId,
         },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              grades: true,
-            },
-          },
-          trainer: true,
-        },
       })
     },
     deletePlanning(root, args, context) {
       return prisma.planning.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              grades: true,
-            },
-          },
-          trainer: true,
         },
       })
     }

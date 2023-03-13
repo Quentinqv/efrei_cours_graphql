@@ -4,39 +4,12 @@ const prisma = new PrismaClient()
 const grades = {
   query: {
     grades(root, args, context) {
-      return prisma.grades.findMany({
-        include: {
-          subject: {
-            include: {
-              study: true,
-              planning: true,
-            },
-          },
-          student: {
-            include: {
-              class: true,
-            },
-          },
-        },
-      })
+      return prisma.grades.findMany()
     },
     grade(root, args, context) {
       return prisma.grades.findUnique({
         where: {
           id: args.id,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              planning: true,
-            },
-          },
-          student: {
-            include: {
-              class: true,
-            },
-          },
         },
       })
     },
@@ -48,19 +21,6 @@ const grades = {
           grade: args.grade,
           studentId: args.studentId,
           subjectId: args.subjectId,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              planning: true,
-            },
-          },
-          student: {
-            include: {
-              class: true,
-            },
-          },
         },
       })
     },
@@ -74,38 +34,12 @@ const grades = {
           studentId: args.studentId,
           subjectId: args.subjectId,
         },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              planning: true,
-            },
-          },
-          student: {
-            include: {
-              class: true,
-            },
-          },
-        },
       })
     },
     deleteGrade(root, args, context) {
       return prisma.grades.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          subject: {
-            include: {
-              study: true,
-              planning: true,
-            },
-          },
-          student: {
-            include: {
-              class: true,
-            },
-          },
         },
       })
     },

@@ -4,19 +4,12 @@ const prisma = new PrismaClient()
 const trainers = {
   query: {
     trainers(root, args, context) {
-      return prisma.trainers.findMany({
-        include: {
-          planning: true,
-        },
-      })
+      return prisma.trainers.findMany()
     },
     trainer(root, args, context) {
       return prisma.trainers.findUnique({
         where: {
           id: args.id,
-        },
-        include: {
-          planning: true,
         },
       })
     }
@@ -26,9 +19,6 @@ const trainers = {
       return prisma.trainers.create({
         data: {
           name: args.name,
-        },
-        include: {
-          planning: true,
         },
       })
     },
@@ -40,18 +30,12 @@ const trainers = {
         data: {
           name: args.name,
         },
-        include: {
-          planning: true,
-        },
       })
     },
     deleteTrainer(root, args, context) {
       return prisma.trainers.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          planning: true,
         },
       })
     }

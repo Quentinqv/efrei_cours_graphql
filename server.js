@@ -53,7 +53,3 @@ app.use(
 )
 
 app.listen(4000)
-
-app.get("/", (req, res) => {
-  res.send("Hello World!")
-})

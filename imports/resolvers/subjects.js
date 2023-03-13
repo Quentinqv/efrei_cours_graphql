@@ -4,37 +4,12 @@ const prisma = new PrismaClient()
 const subjects = {
   query: {
     subjects(root, args, context) {
-      return prisma.subjects.findMany({
-        include: {
-          study: {
-            include: {
-              classes: true,
-            }
-          },
-          grades: {
-            include: {
-              student: true,
-            },
-          },
-        },
-      })
+      return prisma.subjects.findMany()
     },
     subject(root, args, context) {
       return prisma.subjects.findUnique({
         where: {
           id: args.id,
-        },
-        include: {
-          study: {
-            include: {
-              classes: true,
-            }
-          },
-          grades: {
-            include: {
-              student: true,
-            },
-          },
         },
       })
     },
@@ -45,18 +20,6 @@ const subjects = {
         data: {
           name: args.name,
           studyId: args.studyId,
-        },
-        include: {
-          study: {
-            include: {
-              classes: true,
-            }
-          },
-          grades: {
-            include: {
-              student: true,
-            },
-          },
         },
       })
     },
@@ -69,36 +32,12 @@ const subjects = {
           name: args.name,
           studyId: args.studyId,
         },
-        include: {
-          study: {
-            include: {
-              classes: true,
-            }
-          },
-          grades: {
-            include: {
-              student: true,
-            },
-          },
-        },
       })
     },
     deleteSubject(root, args, context) {
       return prisma.subjects.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          study: {
-            include: {
-              classes: true,
-            }
-          },
-          grades: {
-            include: {
-              student: true,
-            },
-          },
         },
       })
     },

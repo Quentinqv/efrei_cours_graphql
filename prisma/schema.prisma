@@ -26,7 +26,7 @@ model grades {
   grade      Float
   subjectId  Int
   studentId  Int
-  student   students @relation(fields: [studentId], references: [id], onUpdate: Restrict, map: "grades_ibfk_2")
+  student   students @relation(fields: [studentId], references: [id], onUpdate: Restrict, map: "grades_ibfk_2", onDelete: Cascade)
   subject   subjects @relation(fields: [subjectId], references: [id], onUpdate: Restrict, map: "grades_ibfk_3")
 
   @@index([studentId], map: "studentId")

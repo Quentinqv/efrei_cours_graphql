@@ -5,39 +5,10 @@ const classes = {
   // This is the resolver for the field "classes" in the type "Query"
   query: {
     classes(root, args, context) {
-      return prisma.classes.findMany({
-        include: {
-          study: true,
-          students: {
-            include: {
-              grades: {
-                include: {
-                  subject: true,
-                },
-              },
-            },
-          },
-        },
-      })
+      return prisma.classes.findMany()
     },
     class(root, args, context) {
-      return prisma.classes.findUnique({
-        where: {
-          id: args.id,
-        },
-        include: {
-          study: true,
-          students: {
-            include: {
-              grades: {
-                include: {
-                  subject: true,
-                },
-              },
-            },
-          },
-        },
-      })
+      return prisma.classes.findUnique()
     },
   },
   // This is the resolver for the field "classes" in the type "Mutation"
@@ -47,18 +18,6 @@ const classes = {
         data: {
           name: args.name,
           studyId: args.studyId,
-        },
-        include: {
-          study: true,
-          students: {
-            include: {
-              grades: {
-                include: {
-                  subject: true,
-                },
-              },
-            },
-          },
         },
       })
     },
@@ -71,36 +30,12 @@ const classes = {
           name: args.name,
           studyId: args.studyId,
         },
-        include: {
-          study: true,
-          students: {
-            include: {
-              grades: {
-                include: {
-                  subject: true,
-                },
-              },
-            },
-          },
-        },
       })
     },
     deleteClass(root, args, context) {
       return prisma.classes.delete({
         where: {
           id: args.id,
-        },
-        include: {
-          study: true,
-          students: {
-            include: {
-              grades: {
-                include: {
-                  subject: true,
-                },
-              },
-            },
-          },
         },
       })
     },

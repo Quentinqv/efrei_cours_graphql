@@ -6,11 +6,6 @@ const students = {
     students(root, args, context) {
       return prisma.students.findMany({
         include: {
-          class: {
-            include: {
-              study: true,
-            },
-          },
           grades: {
             include: {
               subject: true,
@@ -24,18 +19,6 @@ const students = {
         where: {
           id: args.id,
         },
-        include: {
-          class: {
-            include: {
-              study: true,
-            },
-          },
-          grades: {
-            include: {
-              subject: true,
-            },
-          },
-        },
       })
     }
   },
@@ -45,18 +28,6 @@ const students = {
         data: {
           name: args.name,
           classId: args.classId,
-        },
-        include: {
-          class: {
-            include: {
-              study: true,
-            },
-          },
-          grades: {
-            include: {
-              subject: true,
-            },
-          },
         },
       })
     },
@@ -69,36 +40,12 @@ const students = {
           name: args.name,
           classId: args.classId,
         },
-        include: {
-          class: {
-            include: {
-              study: true,
-            },
-          },
-          grades: {
-            include: {
-              subject: true,
-            },
-          },
-        },
       })
     },
     deleteStudent(root, args, context) {
       return prisma.students.delete({
         where: {
-          id: args.id,
-        },
-        include: {
-          class: {
-            include: {
-              study: true,
-            },
-          },
-          grades: {
-            include: {
-              subject: true,
-            },
-          },
+          id: parseInt(args.id),
         },
       })
     }
